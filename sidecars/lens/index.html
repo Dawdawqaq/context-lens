@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,7 +20,7 @@
       background-color: var(--background, #09090b) !important;
       color: var(--foreground, #f4f4f5) !important;
       padding: 1rem !important;
-      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", "Noto Sans SC", Roboto, sans-serif;
       -webkit-font-smoothing: antialiased;
       user-select: none;
       line-height: 1.5;
@@ -53,6 +53,7 @@
     .min-h-screen { min-height: 100vh; }
     .mx-auto { margin-left: auto; margin-right: auto; }
     .w-full { width: 100%; }
+    .min-w-0 { min-width: 0; }
     .w-12 { width: 3rem; }
     .w-3\.5 { width: 0.875rem; }
     .h-3\.5 { height: 0.875rem; }
@@ -70,6 +71,7 @@
     .justify-between { justify-content: space-between; }
     .grid { display: grid; }
     .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .hidden { display: none !important; }
     .relative { position: relative; }
     .absolute { position: absolute; }
@@ -101,6 +103,7 @@
     .py-0\.5 { padding-top: 0.125rem; padding-bottom: 0.125rem; }
     .py-0\.2 { padding-top: 0.05rem; padding-bottom: 0.05rem; }
     .pt-2 { padding-top: 0.5rem; }
+    .pt-1\.5 { padding-top: 0.375rem; }
     .pt-1 { padding-top: 0.25rem; }
     .pt-0\.5 { padding-top: 0.125rem; }
     .pb-2 { padding-bottom: 0.5rem; }
@@ -109,6 +112,7 @@
     .pl-4 { padding-left: 1rem; }
     .pr-1 { padding-right: 0.25rem; }
     .mt-2 { margin-top: 0.5rem; }
+    .mt-1\.5 { margin-top: 0.375rem; }
     .mt-0\.5 { margin-top: 0.125rem; }
     .ml-1\.5 { margin-left: 0.375rem; }
     .ml-1 { margin-left: 0.25rem; }
@@ -133,6 +137,7 @@
 
     /* Typography */
     .font-mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+    .tabular-nums { font-variant-numeric: tabular-nums; }
     .text-2xl { font-size: 1.5rem; line-height: 2rem; }
     .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
     .text-xs { font-size: 0.75rem; line-height: 1rem; }
@@ -147,7 +152,9 @@
     .tracking-wide { letter-spacing: 0.025em; }
     .tracking-tight { letter-spacing: -0.025em; }
     .text-left { text-align: left; }
+    .text-center { text-align: center; }
     .text-right { text-align: right; }
+    .opacity-50 { opacity: 0.5; }
 
     /* Colors & Backgrounds */
     .bg-\[var\(--background\,\#09090b\)\] { background-color: var(--background, #09090b); }
@@ -156,6 +163,7 @@
     .bg-\[var\(--secondary\,\#27272a\)\]\/60 { background-color: color-mix(in srgb, var(--secondary, #27272a) 60%, transparent); }
     .bg-\[var\(--primary\,\#3b82f6\)\]\/10 { background-color: color-mix(in srgb, var(--primary, #3b82f6) 10%, transparent); }
     .bg-zinc-800 { background-color: #27272a; }
+    .bg-zinc-600 { background-color: #52525b; }
     .bg-emerald-500 { background-color: #10b981; }
     .bg-amber-500 { background-color: #f59e0b; }
     .bg-amber-500\/10 { background-color: rgba(245, 158, 11, 0.1); }
@@ -175,6 +183,7 @@
     .text-blue-400 { color: #60a5fa; }
     .text-blue-300\/80 { color: rgba(147, 197, 253, 0.8); }
     .text-indigo-400 { color: #818cf8; }
+    .text-indigo-300 { color: #a5b4fc; }
     .text-emerald-400 { color: #34d399; }
     .text-emerald-300 { color: #6ee7b7; }
 
@@ -186,6 +195,8 @@
     .hover\:bg-\[var\(--accent\,\#27272a\)\]\/40:hover { background-color: color-mix(in srgb, var(--accent, #27272a) 40%, transparent); }
     .hover\:bg-white\/5:hover { background-color: rgba(255, 255, 255, 0.05); }
     .transition-colors { transition: color 150ms ease, background-color 150ms ease, border-color 150ms ease; }
+    .transition-transform { transition: transform 150ms ease; }
+    .rotate-180 { transform: rotate(180deg); }
     .transition-all { transition: all 300ms ease; }
     .duration-300 { transition-duration: 300ms; }
     @keyframes pulse { 50% { opacity: 0.5; } }
@@ -197,7 +208,7 @@
     
     <!-- Top Bar -->
     <div class="flex items-center justify-between pb-2 border-b border-[var(--border,#27272a)] gap-2">
-      <div class="flex items-center gap-2 shrink-0" title="Context Lens: real-time LLM context inspector">
+      <div class="flex items-center gap-2 shrink-0" title="Context Lens：实时 LLM 上下文监控面板">
         <span id="live-dot" class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
         <h1 class="text-sm font-semibold tracking-wide uppercase text-[var(--foreground,#f4f4f5)]">Context Lens</h1>
         <span id="model-badge" class="text-[10px] px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-300 font-mono truncate max-w-[120px]">—</span>
@@ -205,14 +216,14 @@
 
       <div class="flex items-center gap-1.5 overflow-hidden">
         <!-- Session selector / recent sessions dropdown -->
-        <select id="session-select" title="Switch session focus (default: Follow active session)" class="bg-[var(--secondary,#27272a)] text-zinc-300 text-[10px] font-mono rounded px-1.5 py-1 border border-[var(--border,#3f3f46)] outline-none max-w-[110px] truncate cursor-pointer">
-          <option value="">Auto (Active)</option>
+        <select id="session-select" title="切换监控会话（默认：跟随当前活跃会话）" class="bg-[var(--secondary,#27272a)] text-zinc-300 text-[10px] font-mono rounded px-1.5 py-1 border border-[var(--border,#3f3f46)] outline-none max-w-[110px] truncate cursor-pointer">
+          <option value="">自动（当前）</option>
         </select>
 
         <!-- Clickable Conversation ID Badge (Copies full folder path) -->
-        <button id="conv-badge" title="Click to copy full session folder path" class="font-mono text-[10px] text-[var(--muted-foreground,#a1a1aa)] hover:text-white max-w-[130px] truncate bg-[var(--secondary,#27272a)] hover:bg-[var(--accent,#3f3f46)] px-2 py-1 rounded transition-colors flex items-center gap-1 cursor-pointer shrink-0">
+        <button id="conv-badge" title="点击复制会话目录完整路径" class="font-mono text-[10px] text-[var(--muted-foreground,#a1a1aa)] hover:text-white max-w-[130px] truncate bg-[var(--secondary,#27272a)] hover:bg-[var(--accent,#3f3f46)] px-2 py-1 rounded transition-colors flex items-center gap-1 cursor-pointer shrink-0">
           <svg class="w-2.5 h-2.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
-          <span id="conv-text">session</span>
+          <span id="conv-text">会话</span>
         </button>
       </div>
     </div>
@@ -220,19 +231,19 @@
     <!-- Warnings Banner -->
     <div id="warnings-banner" class="hidden p-2 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-300 text-[11px] space-y-1"></div>
 
-    <!-- Usage summary & segmented bar -->
+    <!-- Usage summary & segmented bar + collapsible breakdown -->
     <div class="bg-[var(--card,#18181b)] border border-[var(--border,#27272a)] rounded-xl p-4 shadow-lg space-y-3">
       <div class="flex items-baseline justify-between">
         <div>
           <span id="percent-used" class="text-2xl font-bold tracking-tight">—</span>
-          <span class="text-xs text-[var(--muted-foreground,#a1a1aa)] ml-1">used</span>
+          <span class="text-xs text-[var(--muted-foreground,#a1a1aa)] ml-1">已用</span>
         </div>
         <div id="token-ratio" class="text-[var(--muted-foreground,#a1a1aa)] font-mono text-xs">— / —</div>
       </div>
 
       <!-- Segmented Bar (proportional against total context window) -->
       <div class="relative">
-        <div id="segmented-bar" class="h-2.5 w-full bg-[var(--secondary,#27272a)] rounded-full overflow-hidden flex" title="Segmented utilization against total context window capacity">
+        <div id="segmented-bar" class="h-2.5 w-full bg-[var(--secondary,#27272a)] rounded-full overflow-hidden flex" title="各部分在总上下文窗口中的占用比例">
           <!-- Segments inserted dynamically -->
         </div>
         <div id="autocompact-marker" class="hidden absolute" style="top: -3px; bottom: -3px; width: 2px; background: #f87171;"></div>
@@ -243,68 +254,203 @@
       <div id="legend-container" class="flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-[var(--muted-foreground,#a1a1aa)] pt-1">
         <!-- Legend items inserted dynamically -->
       </div>
-    </div>
 
-    <!-- Category Breakdown List (Collapsible with state retention) -->
-    <div id="categories-container" class="bg-[var(--card,#18181b)] border border-[var(--border,#27272a)] rounded-xl p-3 shadow-lg space-y-1.5 text-xs">
-      <!-- Dynamic categories rendered here -->
-    </div>
-
-    <!-- Next Message Forecast Card -->
-    <div class="p-2.5 rounded-lg bg-[var(--primary,#3b82f6)]/10 border border-blue-500/20 text-blue-400 space-y-1">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-2 font-semibold text-xs">
-          <span class="w-2.5 h-2.5 rounded-sm bg-teal-400 animate-pulse"></span>
-          <span>Forecast Next Message</span>
+      <!-- Collapsible Category Breakdown List (Collapsed by default) -->
+      <div class="border-t border-[var(--border,#27272a)] pt-2">
+        <button id="btn-toggle-breakdown" type="button" aria-expanded="false" class="w-full flex items-center justify-between text-[11px] text-[var(--muted-foreground,#a1a1aa)] hover:text-white transition-colors cursor-pointer">
+          <span>占用明细</span>
+          <span class="flex items-center gap-1 text-[10px] font-mono">
+            <span id="breakdown-toggle-label">展开</span>
+            <svg id="chevron-breakdown" class="w-3.5 h-3.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </span>
+        </button>
+        <div id="categories-container" class="hidden pt-2 space-y-1 text-xs">
+          <!-- Dynamic categories rendered here -->
         </div>
-        <div id="val-forecast-delta" class="font-mono text-xs font-bold">—</div>
-      </div>
-      <div class="text-[11px] text-blue-300/80 flex items-center justify-between pl-4.5">
-        <span>Predicted total context:</span>
-        <span id="val-landing" class="font-mono font-bold text-white">—</span>
       </div>
     </div>
 
-    <!-- Previous Forecast vs Actual Context Card -->
+    <!-- Cache & Usage Card -->
     <div class="bg-[var(--card,#18181b)] border border-[var(--border,#27272a)] rounded-xl p-3 shadow-lg text-xs space-y-2">
       <div class="flex items-center justify-between border-b border-[var(--border,#27272a)] pb-1.5">
-        <span class="font-semibold text-[var(--foreground,#f4f4f5)] flex items-center gap-1.5">
-          <svg class="w-3.5 h-3.5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-          Previous Verification
+        <span class="font-semibold text-[var(--foreground,#f4f4f5)] flex items-center gap-1.5" title="Prompt Cache 命中与 Token 消耗统计">
+          <svg class="w-3.5 h-3.5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          缓存与消耗
         </span>
+        <span id="cache-turns-count" class="text-[10px] text-zinc-400 font-mono tabular-nums">—</span>
       </div>
 
       <div class="grid grid-cols-2 gap-2 pt-0.5">
-        <!-- Previous Forecast Box -->
-        <div class="bg-[var(--secondary,#27272a)]/60 border border-[var(--border,#27272a)] rounded-lg p-2 space-y-0.5">
-          <div class="text-[10px] text-[var(--muted-foreground,#a1a1aa)] font-medium">Previous Forecast</div>
-          <div id="stat-prev-forecast" class="text-sm font-bold font-mono text-zinc-300">—</div>
-          <div class="text-[10px] text-zinc-500 font-mono">predicted</div>
-        </div>
-
-        <!-- Actual Context Box -->
-        <div class="bg-[var(--secondary,#27272a)]/60 border border-[var(--border,#27272a)] rounded-lg p-2 space-y-0.5">
+        <!-- Last Turn Box -->
+        <div class="bg-[var(--secondary,#27272a)]/60 border border-[var(--border,#27272a)] rounded-lg p-2 space-y-1">
           <div class="text-[10px] text-emerald-400 font-medium flex items-center gap-1">
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-            Actual Context
+            本轮命中
           </div>
-          <div id="stat-actual-context" class="text-sm font-bold font-mono text-emerald-300">—</div>
-          <div id="stat-variance-text" class="text-[10px] text-zinc-400 font-mono">—</div>
+          <div id="cache-last-pct" class="text-sm font-bold font-mono tabular-nums text-emerald-300">—</div>
+          <div class="space-y-0.5 pt-1 border-t border-zinc-800/40 text-[10px] tabular-nums">
+            <div class="flex items-center justify-between">
+              <span class="text-zinc-400">命中缓存</span>
+              <span id="cache-last-hit" class="font-mono text-zinc-300">—</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-zinc-400">新增输入</span>
+              <span id="cache-last-input" class="font-mono text-zinc-300">—</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-zinc-400">本轮输出</span>
+              <span id="cache-last-output" class="font-mono text-zinc-300">—</span>
+            </div>
+          </div>
         </div>
+
+        <!-- Session Cumulative Box -->
+        <div class="bg-[var(--secondary,#27272a)]/60 border border-[var(--border,#27272a)] rounded-lg p-2 space-y-1">
+          <div class="text-[10px] text-[var(--muted-foreground,#a1a1aa)] font-medium">会话累计</div>
+          <div id="cache-total-pct" class="text-sm font-bold font-mono tabular-nums text-zinc-300">—</div>
+          <div class="space-y-0.5 pt-1 border-t border-zinc-800/40 text-[10px] tabular-nums">
+            <div class="flex items-center justify-between">
+              <span class="text-zinc-400">累计缓存</span>
+              <span id="cache-total-hit" class="font-mono text-zinc-300">—</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-zinc-400">累计输入</span>
+              <span id="cache-total-input" class="font-mono text-zinc-300">—</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-zinc-400">累计输出</span>
+              <span id="cache-total-output" class="font-mono text-zinc-300">—</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Model Routing Card -->
+    <div id="routing-card" class="hidden bg-[var(--card,#18181b)] border border-[var(--border,#27272a)] rounded-xl p-3 shadow-lg text-xs space-y-2">
+      <div class="flex items-center justify-between border-b border-[var(--border,#27272a)] pb-1.5">
+        <span class="font-semibold text-[var(--foreground,#f4f4f5)] flex items-center gap-1.5" title="Orchestrator 规划/执行交接与实际调用模型记录">
+          <svg class="w-3.5 h-3.5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"/></svg>
+          模型路由
+        </span>
+        <div class="flex items-center gap-1.5 font-mono text-[10px]">
+          <span id="routing-handoffs" class="hidden text-zinc-400">交接 0 次</span>
+          <span id="routing-phase-badge" class="px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-300">—</span>
+        </div>
+      </div>
+
+      <div id="routing-phases-grid" class="grid grid-cols-2 gap-2 pt-0.5">
+        <div class="bg-[var(--secondary,#27272a)]/60 border border-[var(--border,#27272a)] rounded-lg p-2 space-y-1">
+          <div class="text-[10px] text-indigo-400 font-medium flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-indigo-400"></span>
+            规划 (Plan)
+          </div>
+          <div id="routing-plan-turns" class="text-sm font-bold font-mono tabular-nums text-zinc-300">—</div>
+          <div class="flex items-center justify-between pt-1 border-t border-zinc-800/40 text-[10px] tabular-nums">
+            <span class="text-zinc-400">输出</span>
+            <span id="routing-plan-output" class="font-mono text-zinc-300">—</span>
+          </div>
+        </div>
+
+        <div class="bg-[var(--secondary,#27272a)]/60 border border-[var(--border,#27272a)] rounded-lg p-2 space-y-1">
+          <div class="text-[10px] text-emerald-400 font-medium flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+            执行 (Execute)
+          </div>
+          <div id="routing-exec-turns" class="text-sm font-bold font-mono tabular-nums text-emerald-300">—</div>
+          <div class="flex items-center justify-between pt-1 border-t border-zinc-800/40 text-[10px] tabular-nums">
+            <span class="text-zinc-400">输出</span>
+            <span id="routing-exec-output" class="font-mono text-zinc-300">—</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="routing-models-section" class="space-y-1 pt-1.5 border-t border-[var(--border,#27272a)]">
+        <div class="flex items-center justify-between text-[10px] text-zinc-500">
+          <span>日志记录模型</span>
+          <span class="font-mono">请求 · 输出</span>
+        </div>
+        <div id="routing-models-list" class="space-y-1 text-[10px] tabular-nums"></div>
+      </div>
+    </div>
+
+    <!-- Cost Estimation Card (Expanded by default) -->
+    <div id="cost-card" class="bg-[var(--card,#18181b)] border border-[var(--border,#27272a)] rounded-xl p-3 shadow-lg text-xs">
+      <button id="btn-toggle-cost" type="button" aria-expanded="true" class="w-full flex items-center justify-between cursor-pointer text-left">
+        <span class="font-semibold text-[var(--foreground,#f4f4f5)] flex items-center gap-1.5" title="按公开 API 单价估算的等效成本与活跃时长">
+          <svg class="w-3.5 h-3.5 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          费用估算
+        </span>
+        <span class="flex items-center gap-1.5 font-mono text-[10px] text-zinc-400">
+          <span id="cost-summary-inline" class="text-amber-300 tabular-nums">—</span>
+          <svg id="chevron-cost" class="w-3.5 h-3.5 transition-transform rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+        </span>
+      </button>
+
+      <div id="cost-panel-body" class="pt-2 mt-2 border-t border-[var(--border,#27272a)] space-y-2">
+        <div class="grid grid-cols-2 gap-2">
+          <!-- Current Session Box -->
+          <div class="bg-[var(--secondary,#27272a)]/60 border border-[var(--border,#27272a)] rounded-lg p-2 space-y-1">
+            <div class="text-[10px] text-amber-300 font-medium flex items-center gap-1">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+              当前会话
+            </div>
+            <div id="cost-session-usd" class="text-sm font-bold font-mono tabular-nums text-amber-300">—</div>
+            <div id="cost-session-saved" class="text-[10px] text-zinc-500 font-mono tabular-nums truncate">—</div>
+            <div class="space-y-0.5 pt-1 border-t border-zinc-800/40 text-[10px] tabular-nums">
+              <div class="flex items-center justify-between gap-1">
+                <span class="text-zinc-400 shrink-0">起自</span>
+                <span id="cost-session-since" class="font-mono text-zinc-300 truncate">—</span>
+              </div>
+              <div class="flex items-center justify-between gap-1">
+                <span class="text-zinc-400 shrink-0">活跃</span>
+                <span id="cost-session-active" class="font-mono text-zinc-300">—</span>
+              </div>
+              <div class="flex items-center justify-between gap-1">
+                <span class="text-zinc-400 shrink-0">用量</span>
+                <span id="cost-session-tokens" class="font-mono text-zinc-300">—</span>
+              </div>
+            </div>
+            <button id="btn-reset-session-cost" type="button" title="从此刻起重新累计当前会话费用（不影响对话内容）" class="w-full mt-1.5 px-2 py-1 rounded bg-[var(--secondary,#27272a)] hover:bg-[var(--accent,#3f3f46)] text-[10px] text-zinc-300 hover:text-white transition-colors text-center cursor-pointer">清空会话</button>
+          </div>
+
+          <!-- Weekly Summary Box -->
+          <div class="bg-[var(--secondary,#27272a)]/60 border border-[var(--border,#27272a)] rounded-lg p-2 space-y-1">
+            <div class="text-[10px] text-[var(--muted-foreground,#a1a1aa)] font-medium">本周汇总</div>
+            <div id="cost-weekly-usd" class="text-sm font-bold font-mono tabular-nums text-zinc-300">—</div>
+            <div id="cost-weekly-meta" class="text-[10px] text-zinc-500 font-mono tabular-nums truncate">—</div>
+            <div class="space-y-0.5 pt-1 border-t border-zinc-800/40 text-[10px] tabular-nums">
+              <div class="flex items-center justify-between gap-1">
+                <span class="text-zinc-400 shrink-0">起自</span>
+                <span id="cost-weekly-since" class="font-mono text-zinc-300 truncate">—</span>
+              </div>
+              <div class="flex items-center justify-between gap-1">
+                <span class="text-zinc-400 shrink-0">活跃</span>
+                <span id="cost-weekly-active" class="font-mono text-zinc-300">—</span>
+              </div>
+              <div class="flex items-center justify-between gap-1">
+                <span class="text-zinc-400 shrink-0">用量</span>
+                <span id="cost-weekly-tokens" class="font-mono text-zinc-300">—</span>
+              </div>
+            </div>
+            <button id="btn-reset-weekly-cost" type="button" title="从此刻起重新累计跨会话本周费用（不影响对话内容）" class="w-full mt-1.5 px-2 py-1 rounded bg-[var(--secondary,#27272a)] hover:bg-[var(--accent,#3f3f46)] text-[10px] text-zinc-300 hover:text-white transition-colors text-center cursor-pointer">清空本周</button>
+          </div>
+        </div>
+        <div id="cost-reset-note" class="text-[9px] text-zinc-500">按公开 API 单价推算 · 每周一 00:00 自动归零（空闲时可清空）</div>
       </div>
     </div>
 
     <!-- Quick Actions Card -->
     <div class="bg-[var(--card,#18181b)] border border-[var(--border,#27272a)] rounded-xl p-3 shadow-lg space-y-2 text-xs">
-      <div class="font-semibold text-[var(--foreground,#f4f4f5)]">Session Actions</div>
+      <div class="font-semibold text-[var(--foreground,#f4f4f5)]">会话操作</div>
       <div class="grid grid-cols-2 gap-2">
-        <button id="btn-compact" title="Trigger context compaction (/compact) to summarize history" class="p-2 rounded bg-[var(--secondary,#27272a)] hover:bg-[var(--accent,#3f3f46)] transition-colors text-left cursor-pointer">
-          <div class="font-medium text-[var(--foreground,#f4f4f5)]">Compact Session</div>
-          <div class="text-[10px] text-[var(--muted-foreground,#a1a1aa)] mt-0.5">Compress prior messages</div>
+        <button id="btn-compact" title="触发上下文压缩 (/compact) 以总结历史对话" class="p-2 rounded bg-[var(--secondary,#27272a)] hover:bg-[var(--accent,#3f3f46)] transition-colors text-left cursor-pointer">
+          <div class="font-medium text-[var(--foreground,#f4f4f5)]">压缩会话</div>
+          <div class="text-[10px] text-[var(--muted-foreground,#a1a1aa)] mt-0.5">压缩历史消息</div>
         </button>
-        <button id="btn-refresh" title="Recalculate token telemetry for the active session" class="p-2 rounded bg-[var(--secondary,#27272a)] hover:bg-[var(--accent,#3f3f46)] transition-colors text-left cursor-pointer">
-          <div class="font-medium text-[var(--foreground,#f4f4f5)]">Refresh Calculation</div>
-          <div class="text-[10px] text-[var(--muted-foreground,#a1a1aa)] mt-0.5">Poll current session</div>
+        <button id="btn-refresh" title="重新统计当前会话的上下文占用" class="p-2 rounded bg-[var(--secondary,#27272a)] hover:bg-[var(--accent,#3f3f46)] transition-colors text-left cursor-pointer">
+          <div class="font-medium text-[var(--foreground,#f4f4f5)]">刷新计算</div>
+          <div class="text-[10px] text-[var(--muted-foreground,#a1a1aa)] mt-0.5">拉取当前会话</div>
         </button>
       </div>
     </div>
@@ -329,6 +475,68 @@
       indigo: { bg: 'bg-indigo-400', dot: 'bg-indigo-400' },
       purple: { bg: 'bg-purple-400', dot: 'bg-purple-400' }
     };
+
+    // UI Localization Maps (keeps backend API/tests unchanged)
+    const CATEGORY_LABELS = {
+      system: '系统提示词与工具定义',
+      rules: 'Rules 与记忆文件',
+      skills: 'Skills 索引',
+      agents: '自定义 Agents',
+      messages: '对话消息',
+      tools: '工具输出'
+    };
+
+    const LEGEND_LABELS = {
+      system: '系统',
+      rules: 'Rules',
+      skills: 'Skills',
+      agents: 'Agents',
+      messages: '对话',
+      tools: '工具'
+    };
+
+    const KIND_LABELS = {
+      residual: '差值',
+      estimate: '估算'
+    };
+
+    const ITEM_LABELS = {
+      'Compaction Summary': '压缩摘要',
+      'User Prompts': '用户提示词',
+      'Assistant Responses': '模型回复'
+    };
+
+    const ITEM_HINTS = {
+      'Context summary after compaction checkpoint': '压缩检查点后的上下文摘要',
+      'User instructions and prompt messages': '用户指令与提示内容',
+      'Model thought, text and tool call arguments': '模型思考、回复文本及工具调用参数'
+    };
+
+    const WARNING_MAP = {
+      'Waiting for first model response telemetry': '等待首次模型响应统计数据',
+      'Static file estimates scaled to fit measured first-turn floor': '静态文件估算值已按首轮实测基线进行比例缩放',
+      'No conversationId provided': '未提供会话 ID',
+      'Invalid conversationId format': '会话 ID 格式无效',
+      'Conversation log not found on disk': '未在磁盘上找到会话日志文件',
+      'Transcript file exceeds 50MB safety limit': '会话记录文件超过 50MB 安全限制',
+      'Failed reading conversation transcript': '读取会话记录失败',
+      'Task is currently running': '当前有任务正在执行，请等待完成后再清空统计',
+      'Invalid reset scope': '重置范围无效'
+    };
+
+    const tCat = cat => CATEGORY_LABELS[cat.id] || cat.label;
+    const tLegend = cat => LEGEND_LABELS[cat.id] || tCat(cat).split(' ')[0];
+    const tKind = kind => KIND_LABELS[kind] || kind;
+    const tItemLabel = label => ITEM_LABELS[label] || label;
+    const tItemHint = hint => {
+      if (!hint) return '';
+      if (ITEM_HINTS[hint]) return ITEM_HINTS[hint];
+      if (hint.endsWith(' output chars')) {
+        return hint.replace(/ output chars$/, ' 字符输出');
+      }
+      return hint;
+    };
+    const tWarning = w => WARNING_MAP[w] || w;
 
     // State retention across polls
     const expandedIds = new Set();
@@ -374,10 +582,10 @@
         await navigator.clipboard.writeText(path);
         const textSpan = document.getElementById('conv-text');
         const prev = textSpan.textContent;
-        textSpan.textContent = 'Copied Path!';
+        textSpan.textContent = '已复制路径！';
         setTimeout(() => { textSpan.textContent = prev; }, 1800);
       } catch (err) {
-        window.prompt('Session folder path:', path);
+        window.prompt('会话目录路径：', path);
       }
     }
 
@@ -409,7 +617,7 @@
       const select = document.getElementById('session-select');
       // Rebuilding while the user has the list open closes it, so skip that and unchanged lists.
       if (document.activeElement === select) return;
-      const autoLabel = hostConversationId() ? 'Auto (Active)' : 'Auto (Latest)';
+      const autoLabel = hostConversationId() ? '自动（当前）' : '自动（最新）';
       const key = autoLabel + '|' + (manualSessionId || '') + '|' + recentConversations.map(c => c.id).join(',');
       if (key === lastDropdownKey) return;
       lastDropdownKey = key;
@@ -432,27 +640,27 @@
       const btn = document.getElementById('btn-compact');
       const label = btn.querySelector('div');
       if (!compactArmedTimer) {
-        label.textContent = 'Click again to compact';
+        label.textContent = '再次点击确认压缩';
         compactArmedTimer = setTimeout(() => {
           compactArmedTimer = null;
-          label.textContent = 'Compact Session';
+          label.textContent = '压缩会话';
         }, 4000);
         return;
       }
       clearTimeout(compactArmedTimer);
       compactArmedTimer = null;
-      label.textContent = 'Compact Session';
+      label.textContent = '压缩会话';
 
       const convId = getActiveConversationId();
       try {
         if (window.sidecar?.agent?.sendMessage && typeof window.sidecar.agent.sendMessage === 'function') {
           await window.sidecar.agent.sendMessage('/compact', convId);
-          showWarning('Compaction request (/compact) sent to agent.');
+          showWarning('已向 Agent 发送压缩请求 (/compact)。');
         } else {
-          showWarning('Sidecar messaging API unavailable in current preview frame.');
+          showWarning('当前预览框架中 Sidecar 消息接口不可用。');
         }
       } catch (err) {
-        showWarning('Failed sending /compact: ' + err.message);
+        showWarning('发送 /compact 失败：' + err.message);
       }
     }
 
@@ -466,14 +674,15 @@
     let statsInFlight = null;
 
     // Polls, the Refresh button and workspace changes share one in-flight request.
-    function fetchStats() {
+    function fetchStats(forceRefresh = false) {
+      const force = forceRefresh === true;
       if (!statsInFlight) {
-        statsInFlight = doFetchStats().finally(() => { statsInFlight = null; });
+        statsInFlight = doFetchStats(force).finally(() => { statsInFlight = null; });
       }
       return statsInFlight;
     }
 
-    async function doFetchStats() {
+    async function doFetchStats(forceRefresh = false) {
       await fetchRecentConversations();
       const convId = getActiveConversationId();
 
@@ -492,7 +701,8 @@
       try {
         const res = await apiFetch('/api/context-stats', {
           conversationId: convId,
-          workspaceDirs
+          workspaceDirs,
+          forceRefresh
         });
         if (!res.ok) return;
         const data = await res.json();
@@ -511,9 +721,13 @@
       const modelBadge = document.getElementById('model-badge');
       if (data.model) {
         modelBadge.textContent = data.model;
-        modelBadge.title = `Active Model: ${data.model}`;
+        const actual = data.routing?.currentModel;
+        modelBadge.title = actual && actual !== data.model
+          ? `当前设置：${data.model}\n最近实际模型：${actual}`
+          : `当前模型：${data.model}`;
       } else {
         modelBadge.textContent = '—';
+        modelBadge.title = '';
       }
 
       // Usage Header
@@ -525,7 +739,7 @@
       // Warnings
       const banner = document.getElementById('warnings-banner');
       if (data.warnings && data.warnings.length > 0) {
-        banner.innerHTML = data.warnings.map(w => `<div>${esc(w)}</div>`).join('');
+        banner.innerHTML = data.warnings.map(w => `<div>${esc(tWarning(w))}</div>`).join('');
         banner.classList.remove('hidden');
       } else {
         banner.classList.add('hidden');
@@ -543,12 +757,14 @@
         if (!cat.tokens || cat.tokens <= 0) continue;
         const colorStyle = COLOR_CLASSES[cat.color] || COLOR_CLASSES.blue;
         const widthPct = Math.max((cat.tokens / windowTokens) * 100, 0.4).toFixed(2);
+        const catLabel = tCat(cat);
+        const legendLabel = tLegend(cat);
 
-        barHtml += `<div style="width: ${widthPct}%" class="${colorStyle.bg} transition-all duration-300" title="${esc(cat.label)}: ${fmt(cat.tokens)} (${pct(cat.tokens, windowTokens)})"></div>`;
+        barHtml += `<div style="width: ${widthPct}%" class="${colorStyle.bg} transition-all duration-300" title="${esc(catLabel)}: ${fmt(cat.tokens)} (${pct(cat.tokens, windowTokens)})"></div>`;
         legendHtml += `
-          <span class="flex items-center gap-1 cursor-help" title="${esc(cat.label)}: ${fmt(cat.tokens)} (${pct(cat.tokens, windowTokens)})">
+          <span class="flex items-center gap-1 cursor-help" title="${esc(catLabel)}: ${fmt(cat.tokens)} (${pct(cat.tokens, windowTokens)})">
             <span class="w-2 h-2 rounded-full ${colorStyle.dot}"></span>
-            ${esc(cat.label.split(' ')[0])}
+            ${esc(legendLabel)}
           </span>
         `;
       }
@@ -563,11 +779,11 @@
       if (acTokens !== null && acTokens <= windowTokens) {
         const leftPct = (acTokens / windowTokens) * 100;
         marker.style.left = `calc(${leftPct.toFixed(2)}% - 1px)`;
-        marker.title = `Autocompact at ${fmt(acTokens)} tokens`;
+        marker.title = `高水位警戒线：${fmt(acTokens)} tokens（达到时建议 /compact 或开新会话）`;
         marker.classList.remove('hidden');
         const remaining = Number.isFinite(total) ? acTokens - total : null;
-        note.textContent = `Autocompact at ${fmt(acTokens)} (${pct(acTokens, windowTokens)})` +
-          (remaining !== null ? (remaining > 0 ? ` · ${fmt(remaining)} to go` : ' · reached') : '');
+        note.textContent = `警戒线：${fmt(acTokens)} (${pct(acTokens, windowTokens)})` +
+          (remaining !== null ? (remaining > 0 ? ` · 还差 ${fmt(remaining)}` : ' · 已超出，建议压缩') : '');
         note.classList.remove('hidden');
       } else {
         marker.classList.add('hidden');
@@ -577,27 +793,266 @@
       // Render Categories Breakdown List
       renderCategories(data);
 
-      // Forecast Next Message
-      const fNext = data.forecast?.next;
-      const fDelta = data.forecast?.delta;
-      const fDeltaText = fDelta !== null && Number.isFinite(fDelta)
-        ? (fDelta >= 0 ? '+' : '') + fmt(fDelta)
-        : '—';
-      document.getElementById('val-forecast-delta').textContent = fDeltaText;
-      document.getElementById('val-landing').textContent = fNext !== null ? fmt(fNext) : '—';
+      // Cache & Usage
+      renderCacheStats(data.lastRequest, data.sessionTotals);
 
-      // Previous Verification
-      const v = data.verification || {};
-      document.getElementById('stat-prev-forecast').textContent = fmt(v.forecast);
-      document.getElementById('stat-actual-context').textContent = fmt(v.actual);
+      // Model Routing
+      renderRouting(data.routing);
 
-      const varianceEl = document.getElementById('stat-variance-text');
-      if (v.delta !== null && Number.isFinite(v.delta) && v.errorPct !== null) {
-        const sign = v.delta >= 0 ? '+' : '';
-        varianceEl.textContent = `${sign}${fmt(v.delta)} (${v.errorPct}%)`;
+      // Cost Estimation
+      renderCosts(data.costs);
+    }
+
+    const WEEKDAY_NAMES = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+
+    function fmtUsd(n) {
+      if (!Number.isFinite(n)) return '—';
+      if (n > 0 && n < 0.01) return `$${n.toFixed(3)}`;
+      return `$${n.toFixed(2)}`;
+    }
+
+    function fmtCompactTokens(n) {
+      if (!Number.isFinite(n)) return '—';
+      if (n >= 1e6) return `${(n / 1e6).toFixed(1)}M`;
+      if (n >= 1e3) return `${(n / 1e3).toFixed(n >= 1e5 ? 0 : 1)}K`;
+      return String(Math.round(n));
+    }
+
+    function fmtShortTime(iso) {
+      if (!iso) return '—';
+      const d = new Date(iso);
+      if (Number.isNaN(d.getTime())) return '—';
+      const pad = v => String(v).padStart(2, '0');
+      return `${pad(d.getMonth() + 1)}/${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    }
+
+    function fmtDuration(ms, turns) {
+      if (!turns || turns <= 0) return '0m';
+      if (!Number.isFinite(ms) || ms <= 0) return '<1m';
+      const mins = Math.floor(ms / 60000);
+      if (mins < 1) return '<1m';
+      const h = Math.floor(mins / 60);
+      const m = mins % 60;
+      return h > 0 ? `${h}h ${m}m` : `${m}m`;
+    }
+
+    function setCostResetButtonState(btnId, isBusy, defaultText) {
+      const btn = document.getElementById(btnId);
+      if (!btn) return;
+      btn.classList.toggle('opacity-50', Boolean(isBusy));
+      if (isBusy) {
+        btn.title = '当前有任务正在执行，请等待完成后再清空统计';
+      } else if (btnId === 'btn-reset-session-cost') {
+        btn.title = '从此刻起重新累计当前会话费用（不影响对话内容）';
       } else {
-        varianceEl.textContent = '—';
+        btn.title = '从此刻起重新累计跨会话本周费用（不影响对话内容）';
       }
+      if (!costArmedTimers[btnId]) {
+        btn.textContent = defaultText;
+      }
+    }
+
+    function renderCosts(costs) {
+      const s = costs?.session;
+      const w = costs?.weekly;
+
+      const summaryEl = document.getElementById('cost-summary-inline');
+      if (s || w) {
+        const sText = s ? fmtUsd(s.cost) : '—';
+        const wText = w ? fmtUsd(w.cost) : '—';
+        summaryEl.textContent = `${sText} · 周 ${wText}`;
+      } else {
+        summaryEl.textContent = '—';
+      }
+
+      if (s) {
+        document.getElementById('cost-session-usd').textContent = fmtUsd(s.cost);
+        document.getElementById('cost-session-saved').textContent = `缓存省 ${fmtUsd(s.saved)}`;
+        document.getElementById('cost-session-since').textContent = fmtShortTime(s.sinceAt);
+        document.getElementById('cost-session-active').textContent = fmtDuration(s.activeMs, s.turns);
+        document.getElementById('cost-session-tokens').textContent = fmtCompactTokens((s.input || 0) + (s.cache || 0) + (s.output || 0));
+      } else {
+        document.getElementById('cost-session-usd').textContent = '—';
+        document.getElementById('cost-session-saved').textContent = '—';
+        document.getElementById('cost-session-since').textContent = '—';
+        document.getElementById('cost-session-active').textContent = '—';
+        document.getElementById('cost-session-tokens').textContent = '—';
+      }
+
+      if (w) {
+        document.getElementById('cost-weekly-usd').textContent = fmtUsd(w.cost);
+        document.getElementById('cost-weekly-meta').textContent = `${w.sessions || 0} 会话 · 省 ${fmtUsd(w.saved)}`;
+        document.getElementById('cost-weekly-since').textContent = fmtShortTime(w.sinceAt);
+        document.getElementById('cost-weekly-active').textContent = fmtDuration(w.activeMs, w.turns);
+        document.getElementById('cost-weekly-tokens').textContent = fmtCompactTokens((w.input || 0) + (w.cache || 0) + (w.output || 0));
+        const wr = w.weeklyReset || { day: 1, hour: 0 };
+        const dayName = WEEKDAY_NAMES[wr.day] || '周一';
+        const hh = String(wr.hour ?? 0).padStart(2, '0');
+        document.getElementById('cost-reset-note').textContent = `按公开 API 单价推算 · 每${dayName} ${hh}:00 自动归零（空闲时可清空）`;
+      } else {
+        document.getElementById('cost-weekly-usd').textContent = '—';
+        document.getElementById('cost-weekly-meta').textContent = '—';
+        document.getElementById('cost-weekly-since').textContent = '—';
+        document.getElementById('cost-weekly-active').textContent = '—';
+        document.getElementById('cost-weekly-tokens').textContent = '—';
+      }
+
+      setCostResetButtonState('btn-reset-session-cost', s?.isBusy, '清空会话');
+      setCostResetButtonState('btn-reset-weekly-cost', w?.isBusy, '清空本周');
+    }
+
+    const costArmedTimers = {};
+
+    async function triggerCostReset(scope) {
+      const btnId = scope === 'weekly' ? 'btn-reset-weekly-cost' : 'btn-reset-session-cost';
+      const defaultLabel = scope === 'weekly' ? '清空本周' : '清空会话';
+      const btn = document.getElementById(btnId);
+      if (!btn) return;
+
+      const isBusy = scope === 'weekly' ? currentData?.costs?.weekly?.isBusy : currentData?.costs?.session?.isBusy;
+      if (isBusy) {
+        showWarning('当前有任务正在执行，请等待完成后再清空统计。');
+        return;
+      }
+
+      if (!costArmedTimers[btnId]) {
+        btn.textContent = '再次点击确认';
+        costArmedTimers[btnId] = setTimeout(() => {
+          delete costArmedTimers[btnId];
+          btn.textContent = defaultLabel;
+        }, 4000);
+        return;
+      }
+
+      clearTimeout(costArmedTimers[btnId]);
+      delete costArmedTimers[btnId];
+      btn.textContent = defaultLabel;
+
+      try {
+        const res = await apiFetch('/api/cost-reset', {
+          scope,
+          conversationId: getActiveConversationId()
+        });
+        const result = await res.json();
+        if (!res.ok || !result?.ok) {
+          showWarning(tWarning(result?.error || 'Failed reading conversation transcript'));
+          return;
+        }
+        showWarning(scope === 'weekly' ? '已从此刻起重新计算本周汇总费用。' : '已从此刻起重新计算当前会话费用。');
+        await fetchStats(true);
+      } catch (err) {
+        showWarning('清空费用统计失败：' + err.message);
+      }
+    }
+
+    function renderCacheStats(lastReq, totals) {
+      const lastHit = lastReq?.cache ?? null;
+      const lastInput = lastReq?.input ?? null;
+      const lastOut = lastReq?.output ?? null;
+      const lastDenom = (lastHit ?? 0) + (lastInput ?? 0);
+      const lastRate = lastReq && lastDenom > 0 ? (lastHit / lastDenom) * 100 : null;
+
+      const pctEl = document.getElementById('cache-last-pct');
+      if (lastRate !== null) {
+        pctEl.textContent = `${lastRate.toFixed(1)}%`;
+        pctEl.className = 'text-sm font-bold font-mono tabular-nums ' +
+          (lastRate >= 50 ? 'text-emerald-300' : (lastRate > 0 ? 'text-amber-300' : 'text-zinc-400'));
+      } else {
+        pctEl.textContent = '—';
+        pctEl.className = 'text-sm font-bold font-mono tabular-nums text-zinc-400';
+      }
+
+      document.getElementById('cache-last-hit').textContent = fmt(lastHit);
+      document.getElementById('cache-last-input').textContent = fmt(lastInput);
+      document.getElementById('cache-last-output').textContent = fmt(lastOut);
+
+      const turns = totals?.turns || 0;
+      document.getElementById('cache-turns-count').textContent = turns > 0 ? `共 ${turns} 次请求` : '—';
+
+      const totHit = totals?.cache ?? 0;
+      const totInput = totals?.input ?? 0;
+      const totOut = totals?.output ?? 0;
+      const totDenom = totHit + totInput;
+      const totRateText = turns > 0 && totDenom > 0 ? `${((totHit / totDenom) * 100).toFixed(1)}%` : '—';
+
+      document.getElementById('cache-total-pct').textContent = totRateText;
+      document.getElementById('cache-total-hit').textContent = turns > 0 ? fmt(totHit) : '—';
+      document.getElementById('cache-total-input').textContent = turns > 0 ? fmt(totInput) : '—';
+      document.getElementById('cache-total-output').textContent = turns > 0 ? fmt(totOut) : '—';
+    }
+
+    function renderRouting(routing) {
+      const card = document.getElementById('routing-card');
+      const models = Array.isArray(routing?.byModel) ? routing.byModel : [];
+      const hasKnownModels = models.some(m => m.model && m.model !== 'unknown');
+      if (!routing || (!routing.isOrchestrator && !hasKnownModels)) {
+        card.classList.add('hidden');
+        return;
+      }
+      card.classList.remove('hidden');
+
+      const handoffCount = (routing.handoffs?.exitPlan || 0) + (routing.handoffs?.planReview || 0);
+      const handoffsEl = document.getElementById('routing-handoffs');
+      if (handoffCount > 0) {
+        handoffsEl.textContent = `交接 ${handoffCount} 次`;
+        handoffsEl.title = `exit_plan_mode: ${routing.handoffs?.exitPlan || 0} 次 · plan review: ${routing.handoffs?.planReview || 0} 次`;
+        handoffsEl.classList.remove('hidden');
+      } else {
+        handoffsEl.classList.add('hidden');
+      }
+
+      const phaseBadge = document.getElementById('routing-phase-badge');
+      if (routing.currentPhase === 'execute') {
+        phaseBadge.textContent = '执行中';
+        phaseBadge.className = 'px-1.5 py-0.5 rounded bg-zinc-800 text-emerald-300';
+      } else if (routing.currentPhase === 'plan') {
+        phaseBadge.textContent = '规划中';
+        phaseBadge.className = 'px-1.5 py-0.5 rounded bg-zinc-800 text-indigo-300';
+      } else {
+        phaseBadge.textContent = '单模型';
+        phaseBadge.className = 'px-1.5 py-0.5 rounded bg-zinc-800 text-zinc-300';
+      }
+
+      const phasesGrid = document.getElementById('routing-phases-grid');
+      const modelsSection = document.getElementById('routing-models-section');
+      if (routing.isOrchestrator) {
+        phasesGrid.classList.remove('hidden');
+        modelsSection.className = 'space-y-1 pt-1.5 border-t border-[var(--border,#27272a)]';
+        const plan = routing.phases?.plan || {};
+        const exec = routing.phases?.execute || {};
+        document.getElementById('routing-plan-turns').textContent = `${plan.turns || 0} 次`;
+        document.getElementById('routing-plan-output').textContent = fmt(plan.output || 0);
+        document.getElementById('routing-exec-turns').textContent = `${exec.turns || 0} 次`;
+        document.getElementById('routing-exec-output').textContent = fmt(exec.output || 0);
+      } else {
+        phasesGrid.classList.add('hidden');
+        modelsSection.className = 'space-y-1';
+      }
+
+      const listEl = document.getElementById('routing-models-list');
+      if (models.length === 0) {
+        listEl.innerHTML = '<div class="text-zinc-500">暂无模型记录</div>';
+        return;
+      }
+
+      listEl.innerHTML = models.map((m, idx) => {
+        const isUnknown = m.model === 'unknown';
+        const displayName = isUnknown ? '未记录（旧步骤）' : m.model;
+        const dotClass = idx === 0 && !isUnknown ? 'bg-emerald-500' : 'bg-zinc-600';
+        const textClass = idx === 0 && !isUnknown ? 'text-zinc-300' : 'text-zinc-400';
+        const phaseHint = (m.planTurns > 0 || m.executeTurns > 0)
+          ? ` (规划 ${m.planTurns} / 执行 ${m.executeTurns})`
+          : '';
+        return `
+          <div class="flex items-center justify-between gap-2" title="${esc(displayName + phaseHint)}">
+            <div class="flex items-center gap-1.5 min-w-0">
+              <span class="w-1.5 h-1.5 rounded-full shrink-0 ${dotClass}"></span>
+              <span class="truncate font-mono ${textClass}">${esc(displayName)}</span>
+            </div>
+            <span class="font-mono text-zinc-400 shrink-0">${m.turns} 次 · ${fmt(m.output)}</span>
+          </div>
+        `;
+      }).join('');
     }
 
     function renderCategories(data) {
@@ -612,14 +1067,16 @@
         const isExpanded = expandedIds.has(cat.id);
         const cursorClass = hasItems ? 'cursor-pointer hover:bg-[var(--accent,#27272a)]/40' : '';
         const toggleAttr = hasItems ? `data-cat-toggle="${esc(cat.id)}"` : '';
+        const catLabel = tCat(cat);
+        const kindLabel = tKind(cat.kind);
 
         html += `
-          <div class="p-1.5 rounded transition-colors ${cursorClass}" ${toggleAttr} title="${hasItems ? 'Click to toggle itemized list' : esc(cat.label)}">
+          <div class="p-1.5 rounded transition-colors ${cursorClass}" ${toggleAttr} title="${hasItems ? '点击展开/收起明细' : esc(catLabel)}">
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-2 overflow-hidden">
                 <span class="w-2.5 h-2.5 rounded-sm ${colorStyle.bg} shrink-0"></span>
-                <span class="font-medium truncate">${esc(cat.label)}</span>
-                <span class="text-[9px] px-1 py-0.2 rounded bg-zinc-800 text-zinc-400 font-mono shrink-0">${esc(cat.kind)}</span>
+                <span class="font-medium truncate">${esc(catLabel)}</span>
+                <span class="text-[9px] px-1 py-0.2 rounded bg-zinc-800 text-zinc-400 font-mono shrink-0">${esc(kindLabel)}</span>
                 ${hasItems ? `<span class="text-[10px] text-zinc-500 font-mono shrink-0">(${cat.items.length})</span>` : ''}
               </div>
               <div class="flex items-center gap-2 font-mono text-[11px] shrink-0">
@@ -632,12 +1089,16 @@
         if (hasItems) {
           html += `
             <div id="sub-${esc(cat.id)}" class="${isExpanded ? '' : 'hidden'} mt-2 pl-4 pr-1 py-1 space-y-1 text-[11px] text-[var(--muted-foreground,#a1a1aa)] font-mono border-l border-[var(--border,#3f3f46)] ml-1.5 max-h-48 overflow-y-auto">
-              ${cat.items.map(item => `
-                <div class="flex justify-between items-center py-1 px-1 rounded hover:bg-white/5 transition-colors border-b border-zinc-800/40" title="${esc(item.hint || item.label)}">
-                  <span class="truncate max-w-[210px] text-zinc-300 font-normal">${esc(item.label)}</span>
+              ${cat.items.map(item => {
+                const itemLabel = tItemLabel(item.label);
+                const itemHint = tItemHint(item.hint) || itemLabel;
+                return `
+                <div class="flex justify-between items-center py-1 px-1 rounded hover:bg-white/5 transition-colors border-b border-zinc-800/40" title="${esc(itemHint)}">
+                  <span class="truncate max-w-[210px] text-zinc-300 font-normal">${esc(itemLabel)}</span>
                   <span class="text-zinc-400 font-mono text-right shrink-0">${fmt(item.tokens)}</span>
                 </div>
-              `).join('')}
+              `;
+              }).join('')}
             </div>
           `;
         }
@@ -648,12 +1109,12 @@
       // Available window row at bottom of breakdown
       const freeTokens = data.free;
       html += `
-        <div class="flex items-center justify-between p-1.5 text-[var(--muted-foreground,#71717a)] border-t border-[var(--border,#27272a)] pt-2" title="Remaining available token headroom in the context window">
+        <div class="flex items-center justify-between p-1.5 text-[var(--muted-foreground,#71717a)] border-t border-[var(--border,#27272a)] pt-2" title="上下文窗口中当前剩余可用 Token 容量">
           <div class="flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-sm bg-zinc-800"></span>
-            <span>Available window</span>
+            <span>可用窗口</span>
           </div>
-          <div class="font-mono text-[11px]">${fmt(freeTokens)} free (${pct(freeTokens, windowTokens)})</div>
+          <div class="font-mono text-[11px]">剩余 ${fmt(freeTokens)} (${pct(freeTokens, windowTokens)})</div>
         </div>
       `;
 
@@ -671,7 +1132,33 @@
       document.getElementById('session-select')?.addEventListener('change', onSessionSelectChange);
       document.getElementById('conv-badge')?.addEventListener('click', copySessionPath);
       document.getElementById('btn-compact')?.addEventListener('click', triggerCompact);
-      document.getElementById('btn-refresh')?.addEventListener('click', fetchStats);
+      document.getElementById('btn-refresh')?.addEventListener('click', () => fetchStats(true));
+      document.getElementById('btn-reset-session-cost')?.addEventListener('click', () => triggerCostReset('session'));
+      document.getElementById('btn-reset-weekly-cost')?.addEventListener('click', () => triggerCostReset('weekly'));
+
+      document.getElementById('btn-toggle-breakdown')?.addEventListener('click', () => {
+        const btn = document.getElementById('btn-toggle-breakdown');
+        const container = document.getElementById('categories-container');
+        const label = document.getElementById('breakdown-toggle-label');
+        const chevron = document.getElementById('chevron-breakdown');
+        if (!btn || !container) return;
+        container.classList.toggle('hidden');
+        const isOpen = !container.classList.contains('hidden');
+        btn.setAttribute('aria-expanded', String(isOpen));
+        if (label) label.textContent = isOpen ? '收起' : '展开';
+        if (chevron) chevron.classList.toggle('rotate-180', isOpen);
+      });
+
+      document.getElementById('btn-toggle-cost')?.addEventListener('click', () => {
+        const btn = document.getElementById('btn-toggle-cost');
+        const body = document.getElementById('cost-panel-body');
+        const chevron = document.getElementById('chevron-cost');
+        if (!btn || !body) return;
+        body.classList.toggle('hidden');
+        const isOpen = !body.classList.contains('hidden');
+        btn.setAttribute('aria-expanded', String(isOpen));
+        if (chevron) chevron.classList.toggle('rotate-180', isOpen);
+      });
 
       const catContainer = document.getElementById('categories-container');
       if (catContainer) {

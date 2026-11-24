@@ -9,8 +9,17 @@ import { getEnabledPlugins, scanRules, scanSkills, scanAgents, redactHomePath } 
 import { SAFE_CONV_ID_RE, resolveSafeBrainPath } from './lib/paths.mjs';
 import { createFileCache, createTtlCache } from './lib/cache.mjs';
 import { buildStats, emptyStatsResponse, normalizeWorkspaceDirs } from './lib/stats.mjs';
+import {
+  getWeekStart,
+  isConversationBusy,
+  loadCostState,
+  saveCostState,
+  summarizeSessionCost,
+  computeWeeklyCosts
+} from './lib/cost.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+const costStatePath = join(__dirname, 'cost-state.json');
 const app = new SidecarApp();
 
 const fileCache = createFileCache(20);
@@ -117,16 +126,22 @@ app.api('/api/context-stats', (data = {}) => {
     return emptyStatsResponse(config, rawConvId, displayBrainPath, 'Conversation log not found on disk');
   }
 
+  let activeLogStat;
+  try {
+    activeLogStat = statSync(activeLogPath);
+  } catch {
+    return emptyStatsResponse(config, rawConvId, displayBrainPath, 'Failed reading conversation transcript');
+  }
+  if (activeLogStat.size > MAX_TRANSCRIPT_BYTES) {
+    return emptyStatsResponse(config, rawConvId, displayBrainPath, 'Transcript file exceeds 50MB safety limit');
+  }
+
   let parsed = fileCache.get(activeLogPath);
   if (!parsed) {
     try {
-      const st = statSync(activeLogPath);
-      if (st.size > MAX_TRANSCRIPT_BYTES) {
-        return emptyStatsResponse(config, rawConvId, displayBrainPath, 'Transcript file exceeds 50MB safety limit');
-      }
       const text = readFileSync(activeLogPath, 'utf8');
       parsed = parseTranscript(text);
-      fileCache.set(activeLogPath, st, parsed);
+      fileCache.set(activeLogPath, activeLogStat, parsed);
     } catch {
       return emptyStatsResponse(config, rawConvId, displayBrainPath, 'Failed reading conversation transcript');
     }
@@ -149,10 +164,118 @@ app.api('/api/context-stats', (data = {}) => {
     ttlCache.set(ttlKey, scanned);
   }
 
+  const now = new Date();
+  const scheduleStart = getWeekStart(now, config.weeklyReset);
+  const costState = loadCostState(costStatePath, scheduleStart.getTime());
+  const sessionBusy = isConversationBusy(parsed, activeLogStat.mtimeMs, now.getTime());
+  const sessionCost = summarizeSessionCost(parsed, config, costState.sessionResets?.[rawConvId] || null, sessionBusy);
+
+  const weeklyCacheKey = `weekly:${brainBase}`;
+  let weeklyCost = data.forceRefresh === true ? null : ttlCache.get(weeklyCacheKey);
+  if (!weeklyCost) {
+    weeklyCost = computeWeeklyCosts(brainBase, config, costState, {
+      fileCache,
+      parseTranscript,
+      safeConvIdRe: SAFE_CONV_ID_RE,
+      maxTranscriptBytes: MAX_TRANSCRIPT_BYTES,
+      now
+    });
+    ttlCache.set(weeklyCacheKey, weeklyCost, 15000);
+  }
+
   return buildStats(parsed, scanned, config, {
     conversationId: rawConvId,
-    brainPath: displayBrainPath
+    brainPath: displayBrainPath,
+    costs: { session: sessionCost, weekly: weeklyCost }
   });
+}, 'POST');
+
+app.api('/api/cost-reset', (data = {}) => {
+  const scope = data.scope === 'weekly' ? 'weekly' : (data.scope === 'session' ? 'session' : null);
+  if (!scope) {
+    return { ok: false, error: 'Invalid reset scope' };
+  }
+
+  const config = loadLensConfig();
+  const brainBase = config.brainDir || join(homedir(), '.gemini', 'antigravity', 'brain');
+  const now = new Date();
+  const nowMs = now.getTime();
+  const scheduleStart = getWeekStart(now, config.weeklyReset);
+
+  if (scope === 'session') {
+    const rawConvId = data.conversationId ? String(data.conversationId).trim() : '';
+    const brainPath = rawConvId ? resolveSafeBrainPath(brainBase, rawConvId) : null;
+    if (!brainPath) {
+      return { ok: false, error: 'Invalid conversationId format' };
+    }
+    const logFull = join(brainPath, '.system_generated', 'logs', 'transcript_full.jsonl');
+    const logNorm = join(brainPath, '.system_generated', 'logs', 'transcript.jsonl');
+    const activeLogPath = existsSync(logFull) ? logFull : (existsSync(logNorm) ? logNorm : null);
+    if (activeLogPath) {
+      try {
+        const st = statSync(activeLogPath);
+        if (nowMs - st.mtimeMs < 10000 && st.size <= MAX_TRANSCRIPT_BYTES) {
+          let parsed = fileCache.get(activeLogPath);
+          if (!parsed) {
+            parsed = parseTranscript(readFileSync(activeLogPath, 'utf8'));
+            fileCache.set(activeLogPath, st, parsed);
+          }
+          if (isConversationBusy(parsed, st.mtimeMs, nowMs)) {
+            return { ok: false, busy: true, error: 'Task is currently running' };
+          }
+        }
+      } catch {}
+    }
+  } else if (existsSync(brainBase)) {
+    try {
+      const entries = readdirSync(brainBase, { withFileTypes: true });
+      for (const ent of entries) {
+        if (!ent.isDirectory() || !SAFE_CONV_ID_RE.test(ent.name)) continue;
+        const bPath = join(brainBase, ent.name);
+        const logFull = join(bPath, '.system_generated', 'logs', 'transcript_full.jsonl');
+        const logNorm = join(bPath, '.system_generated', 'logs', 'transcript.jsonl');
+        const logPath = existsSync(logFull) ? logFull : (existsSync(logNorm) ? logNorm : null);
+        if (!logPath) continue;
+        try {
+          const st = statSync(logPath);
+          if (nowMs - st.mtimeMs >= 10000 || st.size > MAX_TRANSCRIPT_BYTES) continue;
+          let parsed = fileCache.get(logPath);
+          if (!parsed) {
+            parsed = parseTranscript(readFileSync(logPath, 'utf8'));
+            fileCache.set(logPath, st, parsed);
+          }
+          if (isConversationBusy(parsed, st.mtimeMs, nowMs)) {
+            return { ok: false, busy: true, error: 'Task is currently running' };
+          }
+        } catch {}
+      }
+    } catch {}
+  }
+
+  const validConvIds = new Set();
+  if (existsSync(brainBase)) {
+    try {
+      for (const ent of readdirSync(brainBase, { withFileTypes: true })) {
+        if (ent.isDirectory() && SAFE_CONV_ID_RE.test(ent.name)) {
+          validConvIds.add(ent.name);
+        }
+      }
+    } catch {}
+  }
+
+  const state = loadCostState(costStatePath, scheduleStart.getTime());
+  const resetAt = now.toISOString();
+  if (scope === 'weekly') {
+    state.weeklyResetAt = resetAt;
+  } else {
+    state.sessionResets[String(data.conversationId).trim()] = resetAt;
+  }
+  saveCostState(costStatePath, state, {
+    validConvIds: validConvIds.size > 0 ? validConvIds : null,
+    scheduleWeekStartMs: scheduleStart.getTime()
+  });
+  ttlCache.clear();
+  return { ok: true, scope, resetAt };
 }, 'POST');
 
 app.api('/status', () => {

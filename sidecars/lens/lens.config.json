@@ -1,16 +1,39 @@
 {
-  "defaultWindow": 1048576,
+  "defaultWindow": 524288,
   "windows": {
-    "Gemini 4": 1048576,
-    "Gemini 3.8": 1048576,
-    "Gemini 3": 1048576,
-    "Gemini 2.5": 1048576,
-    "Claude Opus 5.5": 1000000,
-    "Claude Opus": 1000000,
+    "Gemini 4": 524288,
+    "Gemini 3.8": 524288,
+    "Gemini 3": 524288,
+    "Gemini 2.5": 524288,
+    "Claude Opus 5.5": 524288,
+    "Claude Opus": 524288,
     "Claude Sonnet": 200000,
     "Claude Haiku": 200000
   },
   "workspaceDirs": [],
-  "autocompactThreshold": null,
-  "brainDir": null
+  "autocompactThreshold": 0.8,
+  "brainDir": null,
+  "weeklyReset": {
+    "day": 1,
+    "hour": 0
+  },
+  "pricing": {
+    "gemini-4-neon": { "input": 3.0, "cache": 0.15, "output": 15.0 },
+    "gemini-pro-orchestrator-neon": { "input": 3.0, "cache": 0.15, "output": 15.0 },
+    "gemini 4 neon": { "input": 3.0, "cache": 0.15, "output": 15.0 },
+    "orchestrator (neon)": { "input": 3.0, "cache": 0.15, "output": 15.0 },
+    "gemini-4-hydrogen": { "input": 1.5, "cache": 0.075, "output": 7.5 },
+    "gemini-flash-worker": { "input": 1.5, "cache": 0.075, "output": 7.5 },
+    "gemini 4 hydrogen": { "input": 1.5, "cache": 0.075, "output": 7.5 },
+    "gemini-4-argon": { "input": 2.0, "cache": 0.10, "output": 10.0 },
+    "gemini 4 argon": { "input": 2.0, "cache": 0.10, "output": 10.0 },
+    "gemini-4-carbon": { "input": 2.0, "cache": 0.10, "output": 10.0 },
+    "gemini 4 carbon": { "input": 2.0, "cache": 0.10, "output": 10.0 },
+    "gemini 3.8": { "input": 0.75, "cache": 0.075, "output": 3.75 },
+    "gemini 3.1 pro": { "input": 2.0, "cache": 0.20, "output": 12.0 },
+    "gemini 2.5": { "input": 0.10, "cache": 0.025, "output": 0.40 },
+    "claude opus": { "input": 15.0, "cache": 1.5, "output": 75.0 },
+    "claude sonnet": { "input": 3.0, "cache": 0.30, "output": 15.0 },
+    "claude haiku": { "input": 0.80, "cache": 0.08, "output": 4.0 }
+  }
 }
